@@ -20,7 +20,7 @@ public:
     template<class TypeContainer> void add(TypeContainer&&);
 
     template<class TypeIter, std::enable_if_t<
-            std::is_same_v<std::remove_cv_t<std::remove_reference_t<typename std::iterator_traits<TypeIter>::value_type>>, Type  >
+            std::is_same_v<std::remove_cv_t<typename std::iterator_traits<TypeIter>::value_type>, Type  >
             , int> = 0>
     bool find(TypeIter&& beginIter, TypeIter&& endIter)
     {
@@ -31,18 +31,15 @@ public:
         	if (p == nullptr)
         	{
         		return false;
-
         	}
         	p = p->getChild(*iter);
         }
-
-
 
         return p != nullptr && p->isTerminal();
     }
 
     template<class TypeIter, std::enable_if_t<
-            std::is_same_v<std::remove_cv_t<std::remove_reference_t<typename std::iterator_traits<TypeIter>::value_type>>, Type  >
+            std::is_same_v<std::remove_cv_t<typename std::iterator_traits<TypeIter>::value_type>, Type  >
             , int> = 0>
     void add(TypeIter&& beginIter, TypeIter&& endIter)
     {
@@ -58,23 +55,24 @@ public:
         p->setTerminal(true);
     }
 
-    template<std::size_t N, std::enable_if_t<std::is_same_v<char, Type> || std::is_same_v<const char, Type>,int> = 0>
-    void add(const char (&arr)[N] )
+    //overloads to handle null terminated const char arrays
+
+    template<std::size_t N, std::enable_if_t<std::is_same_v<char, Type> || std::is_same_v<wchar_t, Type>,int> = 0>
+    void add(const Type (&arr)[N] )
     {
         add(std::begin(arr), std::end(arr)-1);
 
     }
 
-    template<std::size_t N, std::enable_if_t<std::is_same_v<char, Type> || std::is_same_v<const char, Type>,int> = 0>
-    bool find(const char (&arr)[N] )
+    template<std::size_t N, std::enable_if_t<std::is_same_v<char, Type> || std::is_same_v<wchar_t, Type>,int> = 0>
+    bool find(const Type (&arr)[N] )
     {
         return find(std::begin(arr), std::end(arr)-1);
-
     }
 
 };
 
-
+//generalized containers
 
 template<class Type>
 template<class TypeContainer>
