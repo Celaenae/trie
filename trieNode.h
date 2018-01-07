@@ -13,7 +13,7 @@ class TrieNode
 {
     Type data;
     std::map<Type, std::shared_ptr<TrieNode> > children;
-    bool isTerminalNode;
+    bool mIsTerminalNode;
 public:
     TrieNode(Type, bool in_isTerminal = false);
     std::shared_ptr<TrieNode> setChild(Type);
@@ -25,21 +25,21 @@ public:
 
 
 template<class Type>
-void TrieNode<Type>::setTerminal(bool in_isTerminal)
+void TrieNode<Type>::setTerminal(bool pIsTerminal)
 {
-    isTerminalNode = in_isTerminal;
+    mIsTerminalNode = pIsTerminal;
 }
 
 template<class Type>
 bool TrieNode<Type>::isTerminal()
 {
-    return isTerminalNode;
+    return mIsTerminalNode;
 }
 
 template<class Type>
-std::shared_ptr< TrieNode<Type> > TrieNode<Type>::getChild(Type in_Data)
+std::shared_ptr< TrieNode<Type> > TrieNode<Type>::getChild(Type pData)
 {
-    auto search = children.find(in_Data);
+    auto search = children.find(pData);
 
     return search != children.end() ? search->second : nullptr;
 
@@ -47,39 +47,24 @@ std::shared_ptr< TrieNode<Type> > TrieNode<Type>::getChild(Type in_Data)
 
 
 template<class Type>
-std::shared_ptr< TrieNode<Type> > TrieNode<Type>::setChild(Type in_Data)
+std::shared_ptr< TrieNode<Type> > TrieNode<Type>::setChild(Type pData)
 {
 
+    auto[returnedIterator, isInserted] = children.try_emplace(pData, nullptr );
 
-    std::pair<typename std::map<Type, std::shared_ptr<TrieNode> >::iterator , bool> returnedIterator
-            = children.try_emplace(in_Data, nullptr );
-
-    if (returnedIterator.second == true)
+    if (isInserted == true)
     {
-        (returnedIterator.first)->second = std::make_shared<TrieNode<Type>>(TrieNode<Type>(in_Data));
+        returnedIterator->second = std::make_shared<TrieNode<Type>>(TrieNode<Type>(pData));
     }
 
-    return (returnedIterator.first)->second;
+    return returnedIterator->second;
 }
 
-template<class Type>
-void TrieNode<Type>::removeChild(Type in_Data)
-{
-
-    std::pair<typename std::map<Type, std::shared_ptr<TrieNode> >::iterator , bool> returnedIterator
-            = children.try_emplace(in_Data, nullptr );
-
-    if (returnedIterator.second == true)
-    {
-        children.erase(returnedIterator.first);
-    }
-
-}
 
 template<class Type>
-TrieNode<Type>::TrieNode(Type in_data, bool in_isTerminal)
-        :data(in_data),
-         isTerminalNode(in_isTerminal)
+TrieNode<Type>::TrieNode(Type pData, bool pIsTerminal)
+        :data(pData),
+         mIsTerminalNode(pIsTerminal)
 {
 
 }
