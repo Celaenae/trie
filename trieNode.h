@@ -18,7 +18,6 @@ public:
     TrieNode(Type, bool in_isTerminal = false);
     std::shared_ptr<TrieNode> setChild(Type);
     std::shared_ptr<TrieNode> getChild(Type);
-    void removeChild(Type);
     void setTerminal(bool);
     bool isTerminal();
 };
@@ -68,8 +67,5 @@ TrieNode<Type>::TrieNode(Type pData, bool pIsTerminal)
 {
 
 }
-
-
-
 
 #endif //TRIE_TRIENODE_H

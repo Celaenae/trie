@@ -11,7 +11,6 @@
 #include <algorithm>
 
 
-
 enum class charFamilyArrayIsCastedToString{yes, no};
 
 template<class Type, charFamilyArrayIsCastedToString decision = charFamilyArrayIsCastedToString::no>
@@ -104,17 +103,5 @@ public:
 
 
 };
-
-//generalized containers
-
-
-
-
-
-
-
-
-
-
 
 #endif //TRIE_TRIE_H
